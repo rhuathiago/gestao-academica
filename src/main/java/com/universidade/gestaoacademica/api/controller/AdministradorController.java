@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/administrador")
+@CrossOrigin(origins = "*")
 public class AdministradorController {
 
     private final AdministradorService administradorService;
@@ -31,7 +33,7 @@ public class AdministradorController {
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/visualizar-usuario/{id}")
     public ResponseEntity<Usuario> visualizarUsuario(@PathVariable Long id) {
         Usuario usuario = administradorService.visualizarUsuario(id);
         if (usuario != null) {
@@ -41,7 +43,7 @@ public class AdministradorController {
         }
     }
 
-    @PutMapping("/usuario/{id}")
+    @PutMapping("/atualizar-usuario/{id}")
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario usuarioAtualizado = administradorService.atualizarUsuario(id, usuario);
         if (usuarioAtualizado != null) {
@@ -51,7 +53,7 @@ public class AdministradorController {
         }
     }
 
-    @DeleteMapping("/usuario/{id}")
+    @DeleteMapping("/excluir-usuario/{id}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
         administradorService.excluirUsuario(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

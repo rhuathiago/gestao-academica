@@ -1,22 +1,30 @@
 package com.universidade.gestaoacademica.api.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "disciplina")
 public class Disciplina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome não pode ser vazio")
     private String nome;
 
-    private String semestre;
+    @NotBlank(message = "Semestre não pode ser vazio")
+    private Integer semestre;
 
-    @OneToMany(mappedBy = "disciplina")
-    private List<MatrizCurricularDisciplina> matrizesCurriculares;
+    @NotBlank(message = "Horas não pode ser vazia")
+    private Integer horas;
+
 }

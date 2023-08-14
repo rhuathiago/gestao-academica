@@ -7,6 +7,7 @@ import java.util.List;
 public interface AdministradorService {
 
     Usuario criarUsuario(Usuario usuario);
+//    void criarUsuarioTeste(Usuario usuario);
 
     void excluirUsuario(Long id);
 
@@ -15,5 +16,7 @@ public interface AdministradorService {
     List<Usuario> listarUsuarios();
 
     Usuario visualizarUsuario(Long id);
+
+//    List<Usuario> listarUsuariosTeste();
 }
 
