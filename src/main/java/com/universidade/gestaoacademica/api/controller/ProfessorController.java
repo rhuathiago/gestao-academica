@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/professor")
 public class ProfessorController {
 
-    private final ProfessorService professorService;
-
     @Autowired
-    public ProfessorController(ProfessorService professorService) {
-        this.professorService = professorService;
-    }
+    private ProfessorService professorService;
 
     @GetMapping("/visualizar-matriz-curricular/{id}")
     public ResponseEntity<MatrizCurricular> visualizarMatrizCurricular(@PathVariable Long id) {

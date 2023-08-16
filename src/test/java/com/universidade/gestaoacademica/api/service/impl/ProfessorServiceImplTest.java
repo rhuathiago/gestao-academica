@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,29 +35,28 @@ public class ProfessorServiceImplTest {
 
     @Test
     public void testVisualizarMatrizCurricularExistente() {
-        Long matrizCurricularId = 1L;
+        Long id = 1L;
+        MatrizCurricular matrizCurricular = utilMockado.getMatrizCurricularMockada();
 
-        MatrizCurricular matrizCurricularExistente = utilMockado.getMatrizCurricularMockada();
-        matrizCurricularExistente.setId(matrizCurricularId);
+        when(matrizCurricularRepository.findById(id)).thenReturn(Optional.of(matrizCurricular));
 
-        when(matrizCurricularRepository.findById(matrizCurricularId)).thenReturn(Optional.of(matrizCurricularExistente));
+        MatrizCurricular resultado = professorServiceImpl.visualizarMatrizCurricular(id);
 
-        MatrizCurricular resultado = professorServiceImpl.visualizarMatrizCurricular(matrizCurricularId);
-
-//        verify(matrizCurricularRepository, times(1)).findById(matrizCurricularId);
-        assertEquals(matrizCurricularExistente, resultado);
+        verify(matrizCurricularRepository, times(1)).findById(id);
+        assertEquals(matrizCurricular, resultado);
     }
 
     @Test
     public void testVisualizarMatrizCurricularNaoExistente() {
-        Long matrizCurricularId = 1L;
+        Long id = 1L;
 
-        when(matrizCurricularRepository.findById(matrizCurricularId)).thenReturn(Optional.empty());
+        when(matrizCurricularRepository.findById(id)).thenReturn(Optional.empty());
 
-        MatrizCurricular resultado = professorServiceImpl.visualizarMatrizCurricular(matrizCurricularId);
+        assertThrows(EntityNotFoundException.class, () -> {
+            professorServiceImpl.visualizarMatrizCurricular(id);
+        });
 
-//        verify(matrizCurricularRepository, times(1)).findById(matrizCurricularId);
-        assertNull(resultado);
+        verify(matrizCurricularRepository, times(1)).findById(id);
     }
 
 }

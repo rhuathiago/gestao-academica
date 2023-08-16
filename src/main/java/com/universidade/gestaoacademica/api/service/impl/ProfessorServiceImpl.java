@@ -6,6 +6,8 @@ import com.universidade.gestaoacademica.api.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class ProfessorServiceImpl implements ProfessorService {
 
@@ -14,7 +16,8 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public MatrizCurricular visualizarMatrizCurricular(Long id) {
-        return matrizCurricularRepository.findById(id).orElse(null);
+        return matrizCurricularRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado uma matriz curricular com o ID" + id));
     }
 
 }

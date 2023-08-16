@@ -13,7 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
@@ -35,26 +36,28 @@ public class AlunoServiceImplTest {
 
     @Test
     public void testVisualizarMatrizCurricularExistente() {
-        Long matrizCurricularId = 1L;
+        Long id = 1L;
+        MatrizCurricular matrizCurricular = utilMockado.getMatrizCurricularMockada();
 
-        MatrizCurricular matrizCurricularExistente = utilMockado.getMatrizCurricularMockada();
-        matrizCurricularExistente.setId(matrizCurricularId);
+        when(matrizCurricularRepository.findById(id)).thenReturn(Optional.of(matrizCurricular));
 
-        when(matrizCurricularRepository.findById(matrizCurricularId)).thenReturn(Optional.of(matrizCurricularExistente));
+        MatrizCurricular resultado = alunoServiceImpl.visualizarMatrizCurricular(id);
 
-        MatrizCurricular resultado = alunoServiceImpl.visualizarMatrizCurricular(matrizCurricularId);
-
-        verify(matrizCurricularRepository, times(1)).findById(matrizCurricularId);
-        assertEquals(matrizCurricularExistente, resultado);
+        verify(matrizCurricularRepository, times(1)).findById(id);
+        assertEquals(matrizCurricular, resultado);
     }
 
     @Test
     public void testVisualizarMatrizCurricularNaoExistente() {
-        Long matrizCurricularId = 1L;
+        Long id = 1L;
 
-        when(matrizCurricularRepository.findById(any())).thenReturn(Optional.empty());
+        when(matrizCurricularRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> alunoServiceImpl.visualizarMatrizCurricular(matrizCurricularId));
+        assertThrows(EntityNotFoundException.class, () -> {
+            alunoServiceImpl.visualizarMatrizCurricular(id);
+        });
+
+        verify(matrizCurricularRepository, times(1)).findById(id);
     }
 
 }

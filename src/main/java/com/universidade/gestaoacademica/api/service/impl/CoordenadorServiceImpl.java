@@ -8,6 +8,7 @@ import com.universidade.gestaoacademica.api.service.CoordenadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -31,8 +32,13 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Override
     public Disciplina atualizarDisciplina(Long id, Disciplina disciplina) {
-        disciplina.setId(id);
-        return disciplinaRepository.save(disciplina);
+        Disciplina disciplinaAtualizada = visualizarDisciplina(id);
+
+        disciplinaAtualizada.setNome(disciplina.getNome());
+        disciplinaAtualizada.setSemestre(disciplina.getSemestre());
+        disciplinaAtualizada.setHoras(disciplina.getHoras());
+
+        return disciplinaRepository.save(disciplinaAtualizada);
     }
 
     @Override
@@ -42,9 +48,9 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Override
     public Disciplina visualizarDisciplina(Long id) {
-        return disciplinaRepository.findById(id).orElse(null);
+        return disciplinaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrada uma disciplina com o ID" + id));
     }
-
 
     @Override
     public MatrizCurricular criarMatrizCurricular(MatrizCurricular matrizCurricular) {
@@ -58,8 +64,12 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Override
     public MatrizCurricular atualizarMatrizCurricular(Long id, MatrizCurricular matrizCurricular) {
-        matrizCurricular.setId(id);
-        return matrizCurricularRepository.save(matrizCurricular);
+        MatrizCurricular matrizCurricularAtualizada = visualizarMatrizCurricular(id);
+
+        matrizCurricularAtualizada.setCurso(matrizCurricular.getCurso());
+        matrizCurricularAtualizada.setDisciplinaId(matrizCurricular.getDisciplinaId());
+
+        return matrizCurricularRepository.save(matrizCurricularAtualizada);
     }
 
     @Override
@@ -69,6 +79,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Override
     public MatrizCurricular visualizarMatrizCurricular(Long id) {
-        return matrizCurricularRepository.findById(id).orElse(null);
+        return matrizCurricularRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrada uma matriz curricular com o ID" + id));
     }
 }

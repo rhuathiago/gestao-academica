@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,59 +60,74 @@ public class CoordenadorServiceImplTest {
         verify(disciplinaRepository, times(1)).deleteById(disciplinaId);
     }
 
-    @Test
+   @Test
     public void testAtualizarDisciplina() {
-        Long disciplinaId = 1L;
-        Disciplina disciplinaAtualizada = utilMockado.getDisciplinaMockada();
-        disciplinaAtualizada.setId(disciplinaId);
+        Long id = 1L;
+        Disciplina disciplinaExistente = utilMockado.getDisciplinaMockada();
+        Disciplina disciplinaAtualizada = utilMockado.getOutraDisciplinaMockada();
 
-        when(disciplinaRepository.save(disciplinaAtualizada)).thenReturn(disciplinaAtualizada);
+        when(disciplinaRepository.findById(any())).thenReturn(Optional.of(disciplinaExistente));
+        when(disciplinaRepository.save(any())).thenReturn(disciplinaExistente);
 
-        Disciplina resultado = coordenadorServiceImpl.atualizarDisciplina(disciplinaId, disciplinaAtualizada);
+        Disciplina resultado = coordenadorServiceImpl.atualizarDisciplina(id, disciplinaAtualizada);
 
+        verify(disciplinaRepository, times(1)).findById(id);
+        verify(disciplinaRepository, times(1)).save(disciplinaExistente);
         assertEquals(disciplinaAtualizada, resultado);
+    }
+
+    @Test
+    public void testAtualizarDisciplinaNaoExistente() {
+        Long userId = 1L;
+
+        when(disciplinaRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            coordenadorServiceImpl.atualizarDisciplina(userId, utilMockado.getDisciplinaMockada());
+        });
+
+        verify(disciplinaRepository, times(1)).findById(userId);
+        verify(disciplinaRepository, never()).save(any());
     }
 
     @Test
     public void testListarDisciplinas() {
         List<Disciplina> disciplinasMockadas = new ArrayList<>();
         disciplinasMockadas.add(utilMockado.getDisciplinaMockada());
-        disciplinasMockadas.add(utilMockado.getDisciplinaMockada());
+        disciplinasMockadas.add(utilMockado.getOutraDisciplinaMockada());
 
         when(disciplinaRepository.findAll()).thenReturn(disciplinasMockadas);
 
         List<Disciplina> resultado = coordenadorServiceImpl.listarDisciplinas();
 
-        // Verificação
-//        verify(disciplinaRepository, times(1)).findAll();
+        verify(disciplinaRepository, times(1)).findAll();
         assertEquals(disciplinasMockadas, resultado);
     }
 
     @Test
     public void testVisualizarDisciplinaExistente() {
-        Long disciplinaId = 1L;
+        Long id = 1L;
+        Disciplina disciplina = utilMockado.getDisciplinaMockada();
 
-        Disciplina disciplinaExistente = utilMockado.getDisciplinaMockada();
-        disciplinaExistente.setId(disciplinaId);
+        when(disciplinaRepository.findById(id)).thenReturn(Optional.of(disciplina));
 
-        when(disciplinaRepository.findById(disciplinaId)).thenReturn(Optional.of(disciplinaExistente));
+        Disciplina resultado = coordenadorServiceImpl.visualizarDisciplina(id);
 
-        Disciplina resultado = coordenadorServiceImpl.visualizarDisciplina(disciplinaId);
-
-//        verify(disciplinaRepository, times(1)).findById(disciplinaId);
-        assertEquals(disciplinaExistente, resultado);
+        verify(disciplinaRepository, times(1)).findById(id);
+        assertEquals(disciplina, resultado);
     }
 
     @Test
     public void testVisualizarDisciplinaNaoExistente() {
-        Long disciplinaId = 1L;
+        Long id = 1L;
 
-        when(disciplinaRepository.findById(disciplinaId)).thenReturn(Optional.empty());
+        when(disciplinaRepository.findById(id)).thenReturn(Optional.empty());
 
-        Disciplina resultado = coordenadorServiceImpl.visualizarDisciplina(disciplinaId);
+        assertThrows(EntityNotFoundException.class, () -> {
+            coordenadorServiceImpl.visualizarDisciplina(id);
+        });
 
-//        verify(disciplinaRepository, times(1)).findById(disciplinaId);
-        assertNull(resultado);
+        verify(disciplinaRepository, times(1)).findById(id);
     }
 
     @Test
@@ -122,7 +138,7 @@ public class CoordenadorServiceImplTest {
 
         MatrizCurricular resultado = coordenadorServiceImpl.criarMatrizCurricular(matrizCurricular);
 
-//        verify(matrizCurricularRepository, times(1)).save(matrizCurricular);
+        verify(matrizCurricularRepository, times(1)).save(matrizCurricular);
         assertEquals(matrizCurricular, resultado);
     }
 
@@ -132,63 +148,77 @@ public class CoordenadorServiceImplTest {
 
         assertDoesNotThrow(() -> coordenadorServiceImpl.excluirMatrizCurricular(matrizCurricularId));
 
-//        verify(matrizCurricularRepository, times(1)).deleteById(matrizCurricularId);
+        verify(matrizCurricularRepository, times(1)).deleteById(matrizCurricularId);
     }
 
     @Test
     public void testAtualizarMatrizCurricular() {
-        Long matrizCurricularId = 1L;
-        MatrizCurricular matrizCurricularAtualizada = utilMockado.getMatrizCurricularMockada();
-        matrizCurricularAtualizada.setId(matrizCurricularId);
+        Long id = 1L;
+        MatrizCurricular matrizCurricularExistente = utilMockado.getMatrizCurricularMockada();
+        MatrizCurricular matrizCurricularAtualizada = utilMockado.getOutraMatrizCurricularMockada();
 
-        when(matrizCurricularRepository.save(matrizCurricularAtualizada)).thenReturn(matrizCurricularAtualizada);
+        when(matrizCurricularRepository.findById(any())).thenReturn(Optional.of(matrizCurricularExistente));
+        when(matrizCurricularRepository.save(any())).thenReturn(matrizCurricularExistente);
 
-        MatrizCurricular resultado = coordenadorServiceImpl.atualizarMatrizCurricular(matrizCurricularId, matrizCurricularAtualizada);
+        MatrizCurricular resultado = coordenadorServiceImpl.atualizarMatrizCurricular(id, matrizCurricularAtualizada);
 
-//        verify(matrizCurricularRepository, times(1)).save(matrizCurricularAtualizada);
+        verify(matrizCurricularRepository, times(1)).findById(id);
+        verify(matrizCurricularRepository, times(1)).save(matrizCurricularExistente);
         assertEquals(matrizCurricularAtualizada, resultado);
+    }
+
+    @Test
+    public void testAtualizarMatrizCurricularNaoExistente() {
+        Long userId = 1L;
+
+        when(matrizCurricularRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            coordenadorServiceImpl.atualizarMatrizCurricular(userId, utilMockado.getMatrizCurricularMockada());
+        });
+
+        verify(matrizCurricularRepository, times(1)).findById(userId);
+        verify(matrizCurricularRepository, never()).save(any());
     }
 
     @Test
     public void testListarMatrizesCurriculares() {
         List<MatrizCurricular> matrizesMockadas = new ArrayList<>();
         matrizesMockadas.add(utilMockado.getMatrizCurricularMockada());
-        matrizesMockadas.add(utilMockado.getMatrizCurricularMockada());
+        matrizesMockadas.add(utilMockado.getOutraMatrizCurricularMockada());
 
         when(matrizCurricularRepository.findAll()).thenReturn(matrizesMockadas);
 
         List<MatrizCurricular> resultado = coordenadorServiceImpl.listarMatrizesCurriculares();
 
-//        verify(matrizCurricularRepository, times(1)).findAll();
+        verify(matrizCurricularRepository, times(1)).findAll();
         assertEquals(matrizesMockadas, resultado);
     }
 
     @Test
     public void testVisualizarMatrizCurricularExistente() {
-        Long matrizCurricularId = 1L;
+        Long id = 1L;
+        MatrizCurricular matrizCurricular = utilMockado.getMatrizCurricularMockada();
 
-        MatrizCurricular matrizCurricularExistente = utilMockado.getMatrizCurricularMockada();
-        matrizCurricularExistente.setId(matrizCurricularId);
+        when(matrizCurricularRepository.findById(id)).thenReturn(Optional.of(matrizCurricular));
 
-        when(matrizCurricularRepository.findById(matrizCurricularId)).thenReturn(Optional.of(matrizCurricularExistente));
+        MatrizCurricular resultado = coordenadorServiceImpl.visualizarMatrizCurricular(id);
 
-        MatrizCurricular resultado = coordenadorServiceImpl.visualizarMatrizCurricular(matrizCurricularId);
-
-//        verify(matrizCurricularRepository, times(1)).findById(matrizCurricularId);
-        assertEquals(matrizCurricularExistente, resultado);
+        verify(matrizCurricularRepository, times(1)).findById(id);
+        assertEquals(matrizCurricular, resultado);
     }
 
     @Test
-    public void testVisualizarMatrizCurricularNaoExistente() {
-        Long matrizCurricularId = 1L;
+    public void testVisualizarMatrizCurricularaNaoExistente() {
+        Long id = 1L;
 
-        when(matrizCurricularRepository.findById(matrizCurricularId)).thenReturn(Optional.empty());
+        when(matrizCurricularRepository.findById(id)).thenReturn(Optional.empty());
 
-        MatrizCurricular resultado = coordenadorServiceImpl.visualizarMatrizCurricular(matrizCurricularId);
+        assertThrows(EntityNotFoundException.class, () -> {
+            coordenadorServiceImpl.visualizarMatrizCurricular(id);
+        });
 
-//        verify(matrizCurricularRepository, times(1)).findById(matrizCurricularId);
-        assertNull(resultado);
+        verify(matrizCurricularRepository, times(1)).findById(id);
     }
-
 
 }

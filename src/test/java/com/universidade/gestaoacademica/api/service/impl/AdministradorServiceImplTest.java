@@ -9,14 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -24,9 +24,6 @@ public class AdministradorServiceImplTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
-
-    @Mock
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private UtilMockado utilMockado;
 
@@ -41,44 +38,36 @@ public class AdministradorServiceImplTest {
 
     @Test
     public void testCriarUsuario() {
-
         Usuario usuario = utilMockado.getUsuarioMockado();
         when(usuarioRepository.save(any())).thenReturn(usuario);
 
         Usuario resultado = administradorServiceImpl.criarUsuario(usuario);
 
-//        verify(usuarioRepository, times(1)).save(usuario);
+        verify(usuarioRepository, times(1)).save(usuario);
         assertEquals(usuario, resultado);
-
     }
 
     @Test
     public void testExcluirUsuario() {
-        Long userIdToDelete = 1L;
+        Long usuarioId = 1L;
 
-        administradorServiceImpl.excluirUsuario(userIdToDelete);
-
-//        verify(usuarioRepository, times(1)).deleteById(userIdToDelete);
+        administradorServiceImpl.excluirUsuario(usuarioId);
+        verify(usuarioRepository, times(1)).deleteById(usuarioId);
     }
 
     @Test
-    public void testAtualizarUsuarioExistente() {
-        Long userId = 1L;
-
+    public void testAtualizarUsuario() {
+        Long id = 1L;
         Usuario usuarioExistente = utilMockado.getUsuarioMockado();
-        usuarioExistente.setId(userId);
+        Usuario usuarioAtualizado = utilMockado.getOutroUsuarioMockado();
 
-        Usuario usuarioAtualizado = utilMockado.getUsuarioMockado();
-        usuarioAtualizado.setId(userId);
-        usuarioAtualizado.setNome("Novo Nome");
+        when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuarioExistente));
+        when(usuarioRepository.save(any())).thenReturn(usuarioExistente);
 
-        when(usuarioRepository.findById(userId)).thenReturn(Optional.of(usuarioExistente));
-        when(usuarioRepository.save(usuarioAtualizado)).thenReturn(usuarioAtualizado);
+        Usuario resultado = administradorServiceImpl.atualizarUsuario(id, usuarioAtualizado);
 
-        Usuario resultado = administradorServiceImpl.atualizarUsuario(userId, usuarioAtualizado);
-
-//        verify(usuarioRepository, times(1)).findById(userId);
-//        verify(usuarioRepository, times(1)).save(usuarioAtualizado);
+        verify(usuarioRepository, times(1)).findById(id);
+        verify(usuarioRepository, times(1)).save(usuarioExistente);
         assertEquals(usuarioAtualizado, resultado);
     }
 
@@ -92,49 +81,49 @@ public class AdministradorServiceImplTest {
             administradorServiceImpl.atualizarUsuario(userId, utilMockado.getUsuarioMockado());
         });
 
-//        verify(usuarioRepository, times(1)).findById(userId);
-//        verify(usuarioRepository, never()).save(any());
+        verify(usuarioRepository, times(1)).findById(userId);
+        verify(usuarioRepository, never()).save(any());
     }
 
     @Test
     public void testListarUsuarios() {
-        List<Usuario> usuariosDoRepositorio = new ArrayList<>();
-        usuariosDoRepositorio.add(utilMockado.getUsuarioMockado());
-        usuariosDoRepositorio.add(utilMockado.getUsuarioMockado());
+        List<Usuario> usuariosMockados = new ArrayList<>();
+        usuariosMockados.add(utilMockado.getUsuarioMockado());
+        usuariosMockados.add(utilMockado.getOutroUsuarioMockado());
 
-        when(usuarioRepository.findAll()).thenReturn(usuariosDoRepositorio);
+        when(usuarioRepository.findAll()).thenReturn(usuariosMockados);
 
         List<Usuario> resultado = administradorServiceImpl.listarUsuarios();
 
-//        verify(usuarioRepository, times(1)).findAll();
-        assertEquals(usuariosDoRepositorio, resultado);
+        verify(usuarioRepository, times(1)).findAll();
+        assertEquals(usuariosMockados, resultado);
     }
+
 
     @Test
     public void testVisualizarUsuarioExistente() {
-        Long userId = 1L;
+        Long id = 1L;
+        Usuario usuario = utilMockado.getUsuarioMockado();
 
-        Usuario usuarioExistente = utilMockado.getUsuarioMockado();
-        usuarioExistente.setId(userId);
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
 
-        when(usuarioRepository.findById(userId)).thenReturn(Optional.of(usuarioExistente));
+        Usuario resultado = administradorServiceImpl.visualizarUsuario(id);
 
-        Usuario resultado = administradorServiceImpl.visualizarUsuario(userId);
-
-//        verify(usuarioRepository, times(1)).findById(userId);
-        assertEquals(usuarioExistente, resultado);
+        verify(usuarioRepository, times(1)).findById(id);
+        assertEquals(usuario, resultado);
     }
 
     @Test
     public void testVisualizarUsuarioNaoExistente() {
-        Long userId = 1L;
+        Long id = 1L;
 
-        when(usuarioRepository.findById(userId)).thenReturn(Optional.empty());
+        when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
 
-        Usuario resultado = administradorServiceImpl.visualizarUsuario(userId);
+        assertThrows(EntityNotFoundException.class, () -> {
+            administradorServiceImpl.visualizarUsuario(id);
+        });
 
-//        verify(usuarioRepository, times(1)).findById(userId);
-        assertNull(resultado);
+        verify(usuarioRepository, times(1)).findById(id);
     }
 
 

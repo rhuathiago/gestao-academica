@@ -3,11 +3,15 @@ package com.universidade.gestaoacademica.api.model;
 import com.universidade.gestaoacademica.api.model.enums.TipoDeUsuario;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,7 +30,7 @@ public class Usuario implements UserDetails {
     @NotBlank(message = "Login não pode ser vazio")
     private String login;
 
-    @NotBlank(message = "Matrícula não pode ser vazia")
+    @NotNull
     private Integer matricula;
 
     @NotBlank(message = "Nome não pode ser vazio")
@@ -35,43 +39,54 @@ public class Usuario implements UserDetails {
     @NotBlank(message = "Senha não pode ser vazia")
     private String senha;
 
-    @NotBlank(message = "Tipo de usuário não pode ser vazio")
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_de_usuario", columnDefinition = "VARCHAR(255)")
     private TipoDeUsuario tipoDeUsuario;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        for (TipoDeUsuario tipo : TipoDeUsuario.values()) {
+            if (verificaTipoDeUsuario(tipo)) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + tipo.name()));
+            }
+        }
+
+        return authorities;
+    }
+
+    private boolean verificaTipoDeUsuario(TipoDeUsuario tipo) {
+        return tipoDeUsuario == tipo;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return login;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

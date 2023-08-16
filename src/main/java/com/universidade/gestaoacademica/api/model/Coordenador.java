@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -22,13 +23,12 @@ public class Coordenador {
     @NotBlank(message = "Nome não pode ser vazio")
     private String nome;
 
-    @NotBlank(message = "Matrícula não pode ser vazia")
+    @NotNull
     private Integer matricula;
 
     @NotBlank(message = "Curso coordenado não pode ser vazio")
     private String cursoCoordenado;
 
-    @NotBlank(message = "Tipo de usuário não pode ser vazio")
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_de_usuario", columnDefinition = "VARCHAR(255)")
     private TipoDeUsuario tipoDeUsuario;

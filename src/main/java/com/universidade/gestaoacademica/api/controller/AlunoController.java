@@ -2,7 +2,6 @@ package com.universidade.gestaoacademica.api.controller;
 
 import com.universidade.gestaoacademica.api.model.MatrizCurricular;
 import com.universidade.gestaoacademica.api.service.AlunoService;
-import com.universidade.gestaoacademica.api.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/aluno")
 public class AlunoController {
 
-    private final AlunoService alunoService;
-
     @Autowired
-    public AlunoController(AlunoService alunoService) {
-        this.alunoService = alunoService;
-    }
+    private AlunoService alunoService;
 
     @GetMapping("/visualizar-matriz-curricular/{id}")
     public ResponseEntity<MatrizCurricular> visualizarMatrizCurricular(@PathVariable Long id) {

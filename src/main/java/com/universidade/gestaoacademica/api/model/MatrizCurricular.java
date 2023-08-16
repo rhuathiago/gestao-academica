@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(of = "id")
 @Table(name = "matriz_curricular")
 public class MatrizCurricular {
 

@@ -39,33 +39,36 @@ INSERT INTO MATRIZ_CURRICULAR(curso, disciplina_id) VALUES ('Medicina', 7);
 INSERT INTO MATRIZ_CURRICULAR(curso, disciplina_id) VALUES ('Medicina', 8);
 INSERT INTO MATRIZ_CURRICULAR(curso, disciplina_id) VALUES ('Medicina', 9);
 
-INSERT INTO ADMINISTRADOR(nome, matricula, tipo_de_usuario) VALUES ('Administrador', 12345, 'ADMINISTRADOR');
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Administrador', 12345, 'admin', 'admin', 'ADMINISTRADOR');
+INSERT INTO ADMINISTRADOR(nome, matricula, tipo_de_usuario) VALUES ('Administrador', 8234567, 'ADMINISTRADOR');
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Administrador', 8234567, 'admin', '$2a$10$OdMWnOzXi9PmIVnVwwG2zeGPu8hPpYhDjVYC/eI2dqLMC3rhvwfqq', 'ADMINISTRADOR');
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Rhuãzinho', 8234568, 'coord', '$2a$10$OdMWnOzXi9PmIVnVwwG2zeGPu8hPpYhDjVYC/eI2dqLMC3rhvwfqq', 'COORDENADOR');
 
-INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Alice Silva', 12335, 'Medicina', 'ALUNO', 1);
-INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Pedro Souza', 67890, 'Engenharia de Software', 'ALUNO', 2);
-INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Mariana Santos', 54321, 'Medicina', 'ALUNO', 1);
-INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Lucas Oliveira', 98765, 'Engenharia de Software', 'ALUNO', 2);
-INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Isabella Costa', 23456, 'Medicina', 'ALUNO', 1);
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Alice Silva', 12335, 'alice123', '123', 'ALUNO');
-INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Pedro Souza', 67890, 'pedro123', '123', 'ALUNO');
-INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Mariana Santos', 54321, 'mariana123', '123', 'ALUNO');
-INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Lucas Oliveira', 98765, 'lucas123', '123', 'ALUNO');
-INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Isabella Costa', 23456, 'isabella123', '123', 'ALUNO');
-
-
-INSERT INTO PROFESSOR(nome, matricula, tipo_de_usuario, matriz_curricular_id) VALUES ('Carlos Pereira', 111, 'PROFESSOR', 1);
-INSERT INTO PROFESSOR(nome, matricula, tipo_de_usuario, matriz_curricular_id) VALUES ('Ana Rodrigues', 222, 'PROFESSOR', 2);
-INSERT INTO PROFESSOR(nome, matricula, tipo_de_usuario, matriz_curricular_id) VALUES ('Ricardo Almeida', 333, 'PROFESSOR', 1);
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario)VALUES ('Carlos Pereira', 111, 'carlos123', '123', 'PROFESSOR');
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario)VALUES ('Ana Rodrigues', 222, 'ana123', '123', 'PROFESSOR');
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario)VALUES ('Ricardo Almeida', 333, 'ricardo123', '123', 'PROFESSOR');
+INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Alice Silva', 9876543, 'Medicina', 'ALUNO', 1);
+INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Pedro Souza', 2345678, 'Engenharia de Software', 'ALUNO', 2);
+INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Mariana Santos', 7654321, 'Medicina', 'ALUNO', 1);
+INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Lucas Oliveira', 3456789, 'Engenharia de Software', 'ALUNO', 2);
+INSERT INTO ALUNO(nome, matricula, curso, tipo_de_usuario, matriz_curricular_id) VALUES ('Isabella Costa', 6789012, 'Medicina', 'ALUNO', 1);
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Alice Silva', 9876543, 'alice123', '123', 'ALUNO');
+INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Pedro Souza', 2345678, 'pedro123', '123', 'ALUNO');
+INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Mariana Santos', 7654321, 'mariana123', '123', 'ALUNO');
+INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Lucas Oliveira', 3456789, 'lucas123', '123', 'ALUNO');
+INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('Isabella Costa', 6789012, 'isabella123', '123', 'ALUNO');
+INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('aluno', 6789012, 'aluno', '$2a$10$OdMWnOzXi9PmIVnVwwG2zeGPu8hPpYhDjVYC/eI2dqLMC3rhvwfqq', 'ALUNO');
+INSERT INTO USUARIO (nome, matricula, login, senha, tipo_de_usuario) VALUES ('professor', 6789012, 'professor', '$2a$10$OdMWnOzXi9PmIVnVwwG2zeGPu8hPpYhDjVYC/eI2dqLMC3rhvwfqq', 'PROFESSOR');
 
 
-INSERT INTO COORDENADOR(nome, matricula, curso_coordenado, tipo_de_usuario) VALUES ('Maria Fernandes', 4444, 'Engenharia de Software', 'COORDENADOR');
-INSERT INTO COORDENADOR(nome, matricula, curso_coordenado, tipo_de_usuario) VALUES ('Paulo Costa', 5555, 'Medicina', 'COORDENADOR');
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Maria Fernandes', 4444, 'maria123', '123', 'COORDENADOR');
-INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Paulo Costa', 5555, 'paulo123', '123', 'COORDENADOR');
+INSERT INTO PROFESSOR(nome, matricula, tipo_de_usuario, matriz_curricular_id) VALUES ('Carlos Pereira', 4567890, 'PROFESSOR', 1);
+INSERT INTO PROFESSOR(nome, matricula, tipo_de_usuario, matriz_curricular_id) VALUES ('Ana Rodrigues', 1098765, 'PROFESSOR', 2);
+INSERT INTO PROFESSOR(nome, matricula, tipo_de_usuario, matriz_curricular_id) VALUES ('Ricardo Almeida', 8765432, 'PROFESSOR', 1);
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario)VALUES ('Carlos Pereira', 4567890, 'carlos123', '123', 'PROFESSOR');
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario)VALUES ('Ana Rodrigues', 1098765, 'ana123', '123', 'PROFESSOR');
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario)VALUES ('Ricardo Almeida', 8765432, 'ricardo123', '123', 'PROFESSOR');
+
+
+INSERT INTO COORDENADOR(nome, matricula, curso_coordenado, tipo_de_usuario) VALUES ('Maria Fernandes', 2345678, 'Engenharia de Software', 'COORDENADOR');
+INSERT INTO COORDENADOR(nome, matricula, curso_coordenado, tipo_de_usuario) VALUES ('Paulo Costa', 9871234, 'Medicina', 'COORDENADOR');
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Maria Fernandes', 2345678, 'maria123', '123', 'COORDENADOR');
+INSERT INTO USUARIO(nome, matricula, login, senha, tipo_de_usuario) VALUES ('Paulo Costa', 9871234, 'paulo123', '123', 'COORDENADOR');
 
 
 

@@ -17,7 +17,7 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public MatrizCurricular visualizarMatrizCurricular(Long id) {
         return matrizCurricularRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Matriz curricular com o ID " + id + " não encontrada."));
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado uma matriz curricular com o ID" + id));
     }
 
 }
