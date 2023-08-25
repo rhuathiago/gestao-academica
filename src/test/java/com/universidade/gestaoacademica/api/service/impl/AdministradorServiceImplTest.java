@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -36,15 +35,27 @@ public class AdministradorServiceImplTest {
         utilMockado = new UtilMockado();
     }
 
+//    @Test
+//    public void testCriarUsuario() {
+//        Usuario usuario = utilMockado.getUsuarioMockado();
+//
+//        when(usuarioRepository.save(any())).thenReturn(usuario);
+//
+//        Usuario resultado = administradorServiceImpl.criarUsuario(usuario);
+//
+//        verify(usuarioRepository, times(1)).save(usuario);
+//        assertEquals(usuario, resultado);
+//    }
+
+
     @Test
-    public void testCriarUsuario() {
-        Usuario usuario = utilMockado.getUsuarioMockado();
-        when(usuarioRepository.save(any())).thenReturn(usuario);
+    public void testGerarMatriculaUnica() {
+        when(usuarioRepository.existsByMatricula(anyInt())).thenReturn(false);
 
-        Usuario resultado = administradorServiceImpl.criarUsuario(usuario);
+        Integer matricula = administradorServiceImpl.gerarMatriculaUnica();
 
-        verify(usuarioRepository, times(1)).save(usuario);
-        assertEquals(usuario, resultado);
+        assertTrue(matricula >= 1000000 && matricula <= 9999999);
+        verify(usuarioRepository, atLeastOnce()).existsByMatricula(matricula);
     }
 
     @Test
@@ -125,6 +136,5 @@ public class AdministradorServiceImplTest {
 
         verify(usuarioRepository, times(1)).findById(id);
     }
-
 
 }

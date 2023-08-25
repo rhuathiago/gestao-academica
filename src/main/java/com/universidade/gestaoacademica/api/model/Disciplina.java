@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-@Table(name = "disciplina")
+@Table(name = "DISCIPLINA")
 public class Disciplina {
 
     @Id
@@ -22,10 +23,10 @@ public class Disciplina {
     @NotBlank(message = "Nome não pode ser vazio")
     private String nome;
 
-    @NotBlank(message = "Semestre não pode ser vazio")
+    @NotNull(message = "Semestre não pode ser vazio")
     private Integer semestre;
 
-    @NotBlank(message = "Horas não pode ser vazia")
+    @NotNull(message = "Horas não pode ser vazia")
     private Integer horas;
 
 }

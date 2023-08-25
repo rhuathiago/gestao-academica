@@ -1,5 +1,6 @@
 package com.universidade.gestaoacademica.api.service;
 
+import com.universidade.gestaoacademica.api.model.Curso;
 import com.universidade.gestaoacademica.api.model.Disciplina;
 import com.universidade.gestaoacademica.api.model.MatrizCurricular;
 
@@ -16,4 +17,12 @@ public interface CoordenadorService {
     MatrizCurricular atualizarMatrizCurricular(Long id, MatrizCurricular matrizCurricular);
     List<MatrizCurricular> listarMatrizesCurriculares();
     MatrizCurricular visualizarMatrizCurricular(Long id);
+    List<Curso> listarCursos();
+    Curso criarCurso(Curso curso);
+    Curso atualizarCurso(Long id, Curso curso);
+    Curso findCursoById(Long id);
+    void excluirCurso(Long id);
+    List<Disciplina> buscarDetalhesDisciplinasPorCurso(String cursoNome);
+    List<String> findCursosNaoRepetidos();
+    void excluirMatrizCurricularPorCurso(String curso);
 }

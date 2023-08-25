@@ -1,11 +1,9 @@
 package com.universidade.gestaoacademica.api.model;
 
-import com.universidade.gestaoacademica.api.model.enums.TipoDeUsuario;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -13,8 +11,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "ALUNO")
-public class Aluno {
+@EqualsAndHashCode(of = "id")
+@Table(name = "CURSO")
+public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +21,5 @@ public class Aluno {
 
     @NotBlank(message = "Nome não pode ser vazio")
     private String nome;
-
-    @NotNull
-    private Integer matricula;
-
-    private String curso;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TIPO_DE_USUARIO", columnDefinition = "VARCHAR(255)")
-    private TipoDeUsuario tipoDeUsuario;
 
 }

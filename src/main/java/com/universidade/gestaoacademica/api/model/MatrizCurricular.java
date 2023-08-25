@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-@Table(name = "matriz_curricular")
+@Table(name = "MATRIZ_CURRICULAR")
 public class MatrizCurricular {
 
     @Id
@@ -24,8 +25,8 @@ public class MatrizCurricular {
     private String curso;
 
 
-    @NotBlank(message = "Disciplina não pode ser vazia")
-    @Column(name = "disciplina_id")
+    @NotNull(message = "Disciplina não pode ser vazia")
+    @Column(name = "DISCIPLINA_ID")
     private Integer disciplinaId;
 
 }

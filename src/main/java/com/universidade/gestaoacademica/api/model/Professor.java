@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "professor")
+@Table(name = "PROFESSOR")
 public class Professor {
 
     @Id
@@ -27,12 +27,10 @@ public class Professor {
     @NotNull
     private Integer matricula;
 
+    private String curso;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_de_usuario", columnDefinition = "VARCHAR(255)")
+    @Column(name = "TIPO_DE_USUARIO", columnDefinition = "VARCHAR(255)")
     private TipoDeUsuario tipoDeUsuario;
-
-    @ManyToOne
-    private MatrizCurricular matrizCurricular;
 
 }

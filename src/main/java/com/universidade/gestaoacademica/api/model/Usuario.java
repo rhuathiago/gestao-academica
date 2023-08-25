@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-@Table(name = "usuario")
+@Table(name = "USUARIO")
 public class Usuario implements UserDetails {
 
     @Id
@@ -40,8 +40,10 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_de_usuario", columnDefinition = "VARCHAR(255)")
+    @Column(name = "TIPO_DE_USUARIO", columnDefinition = "VARCHAR(255)")
     private TipoDeUsuario tipoDeUsuario;
+
+    private String curso;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

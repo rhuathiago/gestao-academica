@@ -1,7 +1,9 @@
 package com.universidade.gestaoacademica.api.service.impl;
 
+import com.universidade.gestaoacademica.api.model.Curso;
 import com.universidade.gestaoacademica.api.model.Disciplina;
 import com.universidade.gestaoacademica.api.model.MatrizCurricular;
+import com.universidade.gestaoacademica.api.repository.CursoRepository;
 import com.universidade.gestaoacademica.api.repository.DisciplinaRepository;
 import com.universidade.gestaoacademica.api.repository.MatrizCurricularRepository;
 import com.universidade.gestaoacademica.api.service.CoordenadorService;
@@ -19,6 +21,8 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Autowired
     private MatrizCurricularRepository matrizCurricularRepository;
+    @Autowired
+    private CursoRepository cursoRepository;
 
     @Override
     public Disciplina criarDisciplina(Disciplina disciplina) {
@@ -82,4 +86,50 @@ public class CoordenadorServiceImpl implements CoordenadorService {
         return matrizCurricularRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Não foi encontrada uma matriz curricular com o ID" + id));
     }
+
+    @Override
+    public List<Curso> listarCursos() {
+        return cursoRepository.findAll();
+    }
+
+    @Override
+    public Curso criarCurso(Curso curso) {
+        return cursoRepository.save(curso);
+    }
+
+    @Override
+    public Curso atualizarCurso(Long id, Curso curso) {
+        Curso cursoAtualizado = findCursoById(id);
+
+        cursoAtualizado.setNome(curso.getNome());
+
+        return cursoRepository.save(cursoAtualizado);
+    }
+
+    @Override
+    public Curso findCursoById(Long id) {
+        return cursoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não foi encontrada um curso com o ID" + id));
+    }
+
+    @Override
+    public void excluirCurso(Long id) {
+        cursoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Disciplina> buscarDetalhesDisciplinasPorCurso(String cursoNome) {
+        return matrizCurricularRepository.findDisciplinasByCursoNome(cursoNome);
+    }
+
+    @Override
+    public List<String> findCursosNaoRepetidos() {
+        return matrizCurricularRepository.findCursosNaoRepetidos();
+    }
+
+    @Override
+    public void excluirMatrizCurricularPorCurso(String curso) {
+        matrizCurricularRepository.deleteByCurso(curso);
+    }
+
 }

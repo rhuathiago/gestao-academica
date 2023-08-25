@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "administrador")
+@Table(name = "ADMINISTRADOR")
 public class Administrador {
 
     @Id
@@ -27,7 +27,7 @@ public class Administrador {
     private Integer matricula;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_de_usuario", columnDefinition = "VARCHAR(255)")
+    @Column(name = "TIPO_DE_USUARIO", columnDefinition = "VARCHAR(255)")
     private TipoDeUsuario tipoDeUsuario;
 
 }

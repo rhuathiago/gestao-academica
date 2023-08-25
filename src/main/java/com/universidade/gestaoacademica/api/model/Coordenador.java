@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "coordenador")
+@Table(name = "COORDENADOR")
 public class Coordenador {
 
     @Id
@@ -26,11 +26,8 @@ public class Coordenador {
     @NotNull
     private Integer matricula;
 
-    @NotBlank(message = "Curso coordenado não pode ser vazio")
-    private String cursoCoordenado;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_de_usuario", columnDefinition = "VARCHAR(255)")
+    @Column(name = "TIPO_DE_USUARIO", columnDefinition = "VARCHAR(255)")
     private TipoDeUsuario tipoDeUsuario;
 
 }

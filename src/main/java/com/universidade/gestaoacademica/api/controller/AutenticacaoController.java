@@ -1,9 +1,9 @@
 package com.universidade.gestaoacademica.api.controller;
 
-import com.universidade.gestaoacademica.api.security.DadosTokenJWT;
-import com.universidade.gestaoacademica.api.security.TokenService;
 import com.universidade.gestaoacademica.api.model.DadosAutenticacao;
 import com.universidade.gestaoacademica.api.model.Usuario;
+import com.universidade.gestaoacademica.api.security.DadosTokenJWT;
+import com.universidade.gestaoacademica.api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

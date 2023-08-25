@@ -1,5 +1,6 @@
 package com.universidade.gestaoacademica.api.util;
 
+import com.universidade.gestaoacademica.api.model.Curso;
 import com.universidade.gestaoacademica.api.model.Disciplina;
 import com.universidade.gestaoacademica.api.model.MatrizCurricular;
 import com.universidade.gestaoacademica.api.model.Usuario;
@@ -60,6 +61,20 @@ public class UtilMockado {
                 .nome("Física")
                 .semestre(2)
                 .horas(30)
+                .build();
+    }
+
+    public Curso getCursoMockado() {
+        return Curso.builder()
+                .id(1L)
+                .nome("Engenharia Civil")
+                .build();
+    }
+
+    public Curso getOutroCursoMockado() {
+        return Curso.builder()
+                .id(1L)
+                .nome("Medicina")
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.universidade.gestaoacademica.api.controller;
 
+import com.universidade.gestaoacademica.api.model.Curso;
 import com.universidade.gestaoacademica.api.model.Disciplina;
 import com.universidade.gestaoacademica.api.model.MatrizCurricular;
 import com.universidade.gestaoacademica.api.service.CoordenadorService;
@@ -75,10 +76,18 @@ public class CoordenadorController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
     @GetMapping("/listar-matrizes-curriculares")
-    public ResponseEntity<List<MatrizCurricular>> listarMatrizesCurriculares() {
-        List<MatrizCurricular> matrizesCurriculares = coordenadorService.listarMatrizesCurriculares();
+    public ResponseEntity<List<String>> listarMatrizesCurriculares() {
+        List<String> matrizesCurriculares = coordenadorService.findCursosNaoRepetidos();
         return new ResponseEntity<>(matrizesCurriculares, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+    @GetMapping("/detalhes-disciplinas/{cursoNome}")
+    public ResponseEntity<List<Disciplina>> buscarDetalhesDisciplinasPorCurso(@PathVariable String cursoNome) {
+        List<Disciplina> disciplinasDetalhadas = coordenadorService.buscarDetalhesDisciplinasPorCurso(cursoNome);
+        return new ResponseEntity<>(disciplinasDetalhadas, HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR')")
     @Transactional
@@ -95,9 +104,9 @@ public class CoordenadorController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR')")
     @Transactional
-    @DeleteMapping("/excluir-matriz-curricular/{id}")
-    public ResponseEntity<Void> excluirMatrizCurricular(@PathVariable Long id) {
-        coordenadorService.excluirMatrizCurricular(id);
+    @DeleteMapping("/excluir-matriz-curricular/{curso}")
+    public ResponseEntity<Void> excluirMatrizCurricularPorCurso(@PathVariable String curso) {
+        coordenadorService.excluirMatrizCurricularPorCurso(curso);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -107,6 +116,53 @@ public class CoordenadorController {
         MatrizCurricular matrizCurricular = coordenadorService.visualizarMatrizCurricular(id);
         if (matrizCurricular != null) {
             return new ResponseEntity<>(matrizCurricular, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR')")
+    @GetMapping("/listar-cursos")
+    public ResponseEntity<List<Curso>> listarCursos() {
+        List<Curso> cursos = coordenadorService.listarCursos();
+        return new ResponseEntity<>(cursos, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR')")
+    @Transactional
+    @PostMapping("/criar-curso")
+    public ResponseEntity<Curso> criarCurso(@RequestBody Curso curso) {
+        Curso novoCurso = coordenadorService.criarCurso(curso);
+        return new ResponseEntity<>(novoCurso, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR')")
+    @Transactional
+    @PutMapping("/atualizar-curso/{id}")
+    public ResponseEntity<Curso> atualizarCurso(@PathVariable Long id,
+                                                           @RequestBody Curso curso) {
+        Curso cursoAtualizado = coordenadorService.atualizarCurso(id, curso);
+        if (cursoAtualizado != null) {
+            return new ResponseEntity<>(cursoAtualizado, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR')")
+    @Transactional
+    @DeleteMapping("/excluir-curso/{id}")
+    public ResponseEntity<Void> excluirCurso(@PathVariable Long id) {
+        coordenadorService.excluirCurso(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_COORDENADOR', 'ROLE_PROFESSOR', 'ROLE_ALUNO')")
+    @GetMapping("/visualizar-curso/{id}")
+    public ResponseEntity<Curso> visualizarCurso(@PathVariable Long id) {
+        Curso cursoId = coordenadorService.findCursoById(id);
+        if (cursoId != null) {
+            return new ResponseEntity<>(cursoId, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
